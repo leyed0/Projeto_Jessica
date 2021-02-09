@@ -1,0 +1,55 @@
+#include "max6675.h" // max6675.h file is part of the library that you should download from Robojax.com
+
+int soPin = 5;// SO=Serial Out
+int csPin = 6;// CS = chip select CS pin
+int sckPin = 7;// SCK = Serial Clock pin
+
+struct CD4051
+{
+    uint8_t A, B, C;
+    int Val;
+};
+
+CD4051 CD;
+//MAX6675 robojax(sckPin, csPin, soPin);// create instance object of MAX6675
+
+MAX6675 robojax(8, 9, 10);// create instance object of MAX6675
+
+
+void setup() {
+  InitCD(A3,A4,A5);
+  Serial.begin(9600);// initialize serial monitor with 9600 baud
+  Serial.println("Robojax MAX6675"); 
+
+}
+
+void loop() {
+  for (int i = 0; i < 8; i++)
+  {
+      SetCd(i);
+      Serial.print(i); 
+      Serial.print(" - C = ");
+      Serial.println(robojax.readCelsius());
+      delay(0);
+  }
+  delay(1000);
+}
+void InitCD(uint8_t a,uint8_t b, uint8_t c){
+  CD.A = a;
+  CD.B = b;
+  CD.C = c;
+  pinMode(CD.A, OUTPUT);
+  pinMode(CD.B, OUTPUT);
+  pinMode(CD.C, OUTPUT);
+  digitalWrite(CD.A, LOW);
+  digitalWrite(CD.B, LOW);
+  digitalWrite(CD.C, LOW);
+  delay(20);
+}
+
+void SetCd(int val){
+  CD.Val = val;
+  digitalWrite(CD.A, bitRead(val, 0));
+  digitalWrite(CD.B, bitRead(val, 1));
+  digitalWrite(CD.C, bitRead(val, 2));
+}

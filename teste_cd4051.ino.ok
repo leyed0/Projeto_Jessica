@@ -1,0 +1,41 @@
+#include "max6675.h" // max6675.h file is part of the library that you should download from Robojax.com
+
+struct CD4051
+{
+    uint8_t A, B, C;
+    int Val;
+};
+
+CD4051 CD;
+
+void setup() {
+  InitCD(A3,A4,A5);
+}
+
+void loop() {
+   for (int i = 0; i < 8; i++)
+   {
+     SetCd(i);
+     delay(1000);
+   }
+}
+
+
+void InitCD(uint8_t a,uint8_t b, uint8_t c){
+  CD.A = a;
+  CD.B = b;
+  CD.C = c;
+  pinMode(CD.A, OUTPUT);
+  pinMode(CD.B, OUTPUT);
+  pinMode(CD.C, OUTPUT);
+  digitalWrite(CD.A, LOW);
+  digitalWrite(CD.B, LOW);
+  digitalWrite(CD.C, LOW);
+}
+
+void SetCd(int val){
+  CD.Val = val;
+  digitalWrite(CD.A, bitRead(val, 0));
+  digitalWrite(CD.B, bitRead(val, 1));
+  digitalWrite(CD.C, bitRead(val, 2));
+}

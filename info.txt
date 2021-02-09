@@ -1,0 +1,42 @@
+15 termopares via max6675 - SPI
+3 sensor de humidade - analog ou digital?
+
+esp8266 - serial?
+
+polo negativo dos termais é compartilhado - posso usar o mesmo terra
+
+usar multiplexer no sck ao inves do cs
+cs é ativo em nivel baixo - multiplexer teria que ser negado
+
+THINGSPEAK - 15 segundos entre requests para free e 1 segundo entre requests para premium
+
+https://www.embarcados.com.br/esp8266-com-arduino/
+https://blogmasterwalkershop.com.br/arduino/como-usar-com-arduino-modulo-wifi-esp8266-esp-01/
+
+usar mux/demux para suportar todos os dispositivos
+
+
+1 placa de fibra de vidro de pelo menos 20x20
+1 percloreto de ferro
+
+Socket DIP:
+3 cd4050 - buffer não-inversor - comunicação com o esp
+3 74HC4067 ou 74HCT4067 - 16-channel analog multiplexer/demultiplexer --- PRINCIPAL
+
+3 74HC4052 4-channel analog multiplexer, demultiplexer --- Secundario
+OU
+3 74HC4051 8-channel analog multiplexer, demultiplexer
+
+
+10+ resistor 1k 1/8w ou 1/4w
+1 broca 1mm
+20 BC547
+
+3 Lm7805 - 
+4 capacitor ceramico 0.1uf
+4 capacitor ceramico 0.2uf
+4 capacitor eletrolitico 10uf
+4 capacitor eletrolitico 100uf
+
+5 barra de terminais femea
+5 barra de terminais macho

@@ -1,0 +1,121 @@
+#include <WiFi.h>
+#include <WiFiEspClient.h>
+#include <string.h>
+// #include <ESP8266WiFi.h>
+#include <Wire.h>
+#include <max6675.h>
+
+
+//#include <avr/io.h>
+//#include "util/delay.h"
+//#include <Adafruit_Sensor.h>
+
+
+//char WIFI_NETWORK = "iPhone de Matheus";  // nome do WI-FI
+//char WIFI_PASSWORD = "12345678";   // Senha do WI-FI
+
+//char WIFI_NETWORK[] = "NET SATELITE 2G";     // nome do WI-FI
+//char WIFI_PASSWORD[] = "179027274";   // Senha do WI-FI
+
+char* WIFI_NETWORK ="NET SATELITE 2G";
+const char* WIFI_PASSWORD ="179027274";
+
+
+#include <ThingSpeak.h> // Integração com o ThingSpeak
+#define CHANNEL_ID 1285342   // ID do canal no ThingSpeak
+#define CHANNEL_API_KEY "IF8TVYSGCFWY6YA3"  // API KEY do canal do ThingSpeak
+
+
+#define WIFI_TIMEOUT_MS 2000
+
+WiFiEspClient espClient;
+//PubSubClient client (espClient);
+int status = WL_IDLE_STATUS;
+
+//----------------------------------------------------------
+
+
+void Conecta_WiFi() {
+  Serial.print("Conectando no Wi-Fi..."); // Print para saber se está tentando se conectar ao WiFi local
+  //WiFi.mode(WIFI_STA); // Modo de WiFi Station, conectando à rede já existente
+  WiFi.begin(WIFI_NETWORK, WIFI_PASSWORD); // Iniciando a conexão à rede com a senha passada
+
+  unsigned long startAttemptTime = millis(); // Começo da contagem de tempo das tentativas de conexão
+  while ((WiFi.status() != WL_CONNECTED) && (millis() - startAttemptTime) < WIFI_TIMEOUT_MS) {
+    delay(100);
+  }
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("Falha ao tentar se conectar ao Wi-Fi."); // mensagem para o usuario que nao foi possivel se conectar ao Wi-Fi
+    Conecta_WiFi(); // chama a função de conectar o Wi-Fi para tentar se conectar novamente
+  } else {
+    //Serial.printf("Conectado a: %s \n", WIFI_NETWORK); // mostra o nome da rede que foi conectado
+    Serial.print("Conectado a rede Wi-Fi"); // mensagem que o ESP se conectou ao WiFi
+  }
+
+}
+
+
+//----------------------------------------------------------
+
+
+//Ajustar para realizar 4 leituras em 1 segundo e imprimir a média
+//Aplicar programa (Java) para visualizar em tempo real o gráfico dos termopares
+
+int leituras = 4;                         //quantidade de leituras por segundo, para realizar a média
+float valor_termopar[5]    = {0, 0, 0, 0, 0}; //vetor que armazena a leitura instantânea dos sensores
+float correcao_termopar[5] = {0, 0, 0, 0, 0}; //ajusta o offset de cada termopar
+int minuto = 0, seg = 0, media = 0;
+long tempoAtual = 0, tempoInicial = 0;
+float media_termopar[5] = {0, 0, 0, 0, 0}; //vetor contendo a médias das leituras por segundo
+
+
+//----------------------------------------------------------
+
+
+const int   thermoDO_0  = 5;
+const int   thermoCS_0  = 6;
+const int   thermoCLK_0 = 7;
+MAX6675 thermocouple_0(thermoCLK_0, thermoCS_0, thermoDO_0);
+
+const int   thermoDO_1  = 8;
+const int   thermoCS_1  = 9;
+const int   thermoCLK_1 = 10;
+MAX6675 thermocouple_1(thermoCLK_1, thermoCS_1, thermoDO_1);
+
+const int   thermoDO_2 = 11;
+const int   thermoCS_2 = 12;
+const int   thermoCLK_2 = 13;
+MAX6675 thermocouple_2(thermoCLK_2, thermoCS_2, thermoDO_2);
+
+const int   thermoDO_3 = 2;
+const int   thermoCS_3 = 3;
+const int   thermoCLK_3 = 4;
+MAX6675 thermocouple_3(thermoCLK_3, thermoCS_3, thermoDO_3);
+
+const int   thermoDO_4 = 17;
+const int   thermoCS_4 = 16;
+const int   thermoCLK_4 = 15;
+MAX6675 thermocouple_4(thermoCLK_4, thermoCS_4, thermoDO_4);
+
+
+//-----------------------------------------------------------
+
+
+void imprime_tempo();
+void temperaturas();
+
+
+//-----------------------------------------------------------
+
+
+void setup()
+{
+  Serial.begin(9600);
+  //WiFi.mode(WIFI_STA);
+  Conecta_WiFi();
+  ThingSpeak.begin(espClient);
+}
+
+
+//-----------------------------------------------
