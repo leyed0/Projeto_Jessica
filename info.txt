@@ -10,6 +10,9 @@ cs é ativo em nivel baixo - multiplexer teria que ser negado
 
 THINGSPEAK - 15 segundos entre requests para free e 1 segundo entre requests para premium
 
+sensor nivel de agua:
+https://www.youtube.com/watch?v=hTjfDUOtfjk&ab_channel=WLMecatr%C3%B4nica
+
 https://www.embarcados.com.br/esp8266-com-arduino/
 https://blogmasterwalkershop.com.br/arduino/como-usar-com-arduino-modulo-wifi-esp8266-esp-01/
 
