@@ -1,6 +1,6 @@
 {
     "programmer": "AVRISP mkII",
     "board": "arduino:avr:uno",
-    "sketch": "teste_termopar_4051\\teste_termopar_4051.ino",
+    "sketch": "TESTE_2003_4051\\TESTE_2003_4051.ino",
     "port": "COM8"
 }
