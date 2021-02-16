@@ -1,0 +1,97 @@
+#pragma once
+#include<arduino.h>
+
+namespace LeyedLib{
+    enum ArduinoPinModes{Output=0,Input_Digital=1,Input_Analog=2,Input_PullUp=3};
+    enum IOPins{IO0=3,IO1=3<<2,IO2=3<<4,IO3=3<<6,IO4=3<<8,IO5=3<<10,IO6=3<<12,IO7=3<<14};
+    class CD4051_IO{
+        //uint8_t PIN[8];
+        public:
+        uint16_t PinModes;
+        void SetPinModes(ArduinoPinModes md){
+            PinModes = 0;
+            PinModes = md||md<<2||md<<4||md<<6||md<<8||md<<10||md<<12||md<<14;
+        };
+        void SetPinModes(ArduinoPinModes a, ArduinoPinModes b,ArduinoPinModes c,ArduinoPinModes d,ArduinoPinModes e,ArduinoPinModes f,ArduinoPinModes g,ArduinoPinModes h){
+            PinModes = a||b<<2||c<<4||d<<6||e<<8||f<<10||g<<12||h<<14;
+        };
+        void SetPinModes(int i, ArduinoPinModes mode){
+            uint16_t tmp=mode<<(i*2);
+            PinModes|=tmp;
+        }
+        void SetPinModes(int md){
+            PinModes = md;
+        };
+    };
+    class CD4051{
+        //the pins
+        uint8_t A, B, C, EN, COM;
+        CD4051_IO Pins;
+
+        CD4051(uint8_t a, uint8_t b, uint8_t c, uint8_t en, uint8_t com){
+            A = a;
+            B = b;
+            C = c;
+            EN = en;
+            COM = com;
+        }
+        int read(uint8_t pin){
+            int temp = Pins.PinModes<<(pin*2) && 3;
+            switch (temp)
+            {
+            case Output:
+                throw "Requested pin is setup as Output";
+                break;
+            case Input_Digital:
+                pinMode(EN, OUTPUT);
+                digitalWrite(EN, HIGH);
+                pinMode(COM, INPUT);
+                return digitalRead(COM);
+                break;
+            case Input_PullUp:
+                pinMode(EN, OUTPUT);
+                digitalWrite(EN, HIGH);
+                pinMode(COM, INPUT_PULLUP);
+                return digitalRead(COM);
+                break;
+            case Input_Analog:
+                pinMode(EN, OUTPUT);
+                digitalWrite(EN, HIGH);
+                pinMode(COM, INPUT_PULLUP);
+                return analogRead(COM);
+                break;
+            default:
+                throw "Pinmode Not set for requested pin";
+            }
+        };
+
+        //OK
+        void* SetIO(uint8_t pin, ArduinoPinModes mode){
+            pinMode(A, OUTPUT);
+            pinMode(B, OUTPUT);
+            pinMode(C, OUTPUT);
+            digitalWrite(A, bitRead(pin, 0));
+            digitalWrite(B, bitRead(pin, 1));
+            digitalWrite(C, bitRead(pin, 2));
+            switch (mode)
+            {
+            case ArduinoPinModes::Output:
+                pinMode(COM, OUTPUT);
+                break;
+            case ArduinoPinModes::Input_PullUp:
+                pinMode(COM, INPUT_PULLUP);
+                break;
+            case ArduinoPinModes::Input_Digital || ArduinoPinModes::Input_Analog:
+                pinMode(COM, INPUT);
+                break;
+            default:
+                return "Requested PinMode Is not recognized";
+                break;
+            }
+            return "";
+        };
+        void Write(int i){
+
+        };
+    };
+}
