@@ -6,11 +6,6 @@ struct Multiplex_Signal
     int Val;
 };
 //A,B,C,COM,EN0,1,2,3,4,5; - TOTAL 40 pins
-struct CP{
-  MAX6675 Thermal[5];
-  int water[5];
-  int moisture;
-};
 
 Multiplex_Signal CD;
 //MAX6675 robojax(sckPin, csPin, soPin);// create instance object of MAX6675

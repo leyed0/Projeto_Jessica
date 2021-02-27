@@ -1,6 +1,6 @@
 {
     "programmer": "AVRISP mkII",
     "board": "arduino:avr:uno",
-    "sketch": "rework\\rework.ino",
+    "sketch": "rework2/rework2.ino",
     "port": "COM8"
 }

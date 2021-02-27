@@ -9,32 +9,20 @@ struct probes
 int del=35;
 LeyedLib::CD4051* CD;
 MAX6675 *thermal;
-uint8_t cds[] = {A1, A2,A3,A4,A5};
+//uint8_t cds[] = {8, 9,10,11,12};
+uint8_t cds[] = {2,0,4,5,16};
 probes PT[3] = {{0 ,1 , 2, 3, 4, 5, 6, 7, 8, 9,10},
                 {11,12,13,14,15,16,17,18,19,20,21},
                 {22,23,24,25,26,27,28,29,30,31,32}};
-//     A0 = IO
-//     A1 = EN0
-//     A2 = EN1
-//     A3 = EN2
-//     A4 = EN3
-//     A5 = EN4
 
-//     D12 = Multiplex A
-//     D11 = Multiplex B
-//     D10 = Multiplex C
-//     D9 = Thermal SCK
-//     D8 = Thermal SO
-
-//     D3 = TX1
-//     D2 = RX1
 void setup(){
-    Serial.begin(9600);
-    CD = new LeyedLib::CD4051(12,11,10,A0,cds,5);
+    Serial.begin(115200);
+    //CD = new LeyedLib::CD4051(5,6,7,A3,cds,5);
+    CD = new LeyedLib::CD4051(14,12,13,A0,cds,5);
 }
 void loop(){
     readprobe(0);
-    for (uint8_t i = 0; i < 11; i++)
+    for (uint8_t i = 0; i < 13; i++)
     {
         Serial.print(PT[0].Readings[i]);
         Serial.print(" - ");
@@ -61,10 +49,10 @@ void blink(uint8_t pin){
 }
 
 void readprobe(uint8_t pb){
-    thermal = new MAX6675(9, CD->COM, 8);
+    thermal = new MAX6675(15, CD->COM, 10);
+    //thermal = new MAX6675(3, CD->COM, 4);
     for (int i = 0; i < 5; i++)
     {
-        
         digitalWrite(CD->COM, HIGH);
         digitalWrite(CD->SetIO((i+(13*pb)), LeyedLib::ArduinoPinModes::Output),LOW);
         delay(del);
@@ -85,7 +73,11 @@ void readprobe(uint8_t pb){
         CD->reset();
 
     }
-    digitalWrite(CD->SetIO((10*(pb+1)), LeyedLib::ArduinoPinModes::Input_Analog),LOW);
-    PT[pb].Readings[10]=analogRead(CD->COM);
-    CD->reset();
+    for (int i = 10; i < 13; i++)
+    {
+        digitalWrite(CD->SetIO((i+(13*pb)), LeyedLib::ArduinoPinModes::Input_Analog),LOW);
+        PT[pb].Readings[i]=analogRead(CD->COM);
+        CD->reset();
+    }
+    
 }

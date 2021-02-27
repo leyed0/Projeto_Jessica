@@ -1,6 +1,25 @@
 15 termopares via max6675 - SPI
 3 sensor de humidade - analog ou digital?
 
+pinos com falha:
+    03
+    
+pinos shield:
+    A0 = IO
+    A1 = EN4
+    A2 = EN3
+    A3 = EN2
+    A4 = EN1
+    A5 = EN0
+
+    D12 = Multiplex A
+    D11 = Multiplex B
+    D10 = Multiplex C
+    D9 = Thermal SCK
+    D8 = Thermal SO
+
+    D3 = TX1
+    D2 = RX1
 esp8266 - serial?
 
 polo negativo dos termais é compartilhado - posso usar o mesmo terra
