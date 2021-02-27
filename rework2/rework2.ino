@@ -1,6 +1,20 @@
 #include "cd4051.hpp"
 #include "max6675.h"
+//     A0 = IO
+//     A1 = EN0
+//     A2 = EN1
+//     A3 = EN2
+//     A4 = EN3
+//     A5 = EN4
 
+//     D12 = Multiplex A
+//     D11 = Multiplex B
+//     D10 = Multiplex C
+//     D9 = Thermal SCK
+//     D8 = Thermal SO
+
+//     D3 = TX1
+//     D2 = RX1
 
 struct readings{
     float Thermal[5];
@@ -24,7 +38,7 @@ probes PT[3] = {{0 ,1 , 2, 3, 4, 5, 6, 7, 8, 9,10},
 void setup(){
     Serial.begin(115200);
     CD = new LeyedLib::CD4051(12,11,10,A0,cds,5);
-    thermal = new MAX6675(8, CD->COM, 9);
+    thermal = new MAX6675(9, CD->COM, 10);
 }
 void loop(){
     int tempo = millis();
