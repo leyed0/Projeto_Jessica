@@ -4,6 +4,12 @@
         "bitset": "cpp",
         "initializer_list": "cpp",
         "regex": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "chrono": "cpp",
+        "algorithm": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp"
     }
 }
