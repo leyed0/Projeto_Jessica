@@ -1,6 +1,7 @@
 {
     "programmer": "AVRISP mkII",
-    "board": "arduino:avr:uno",
-    "sketch": "kaaiot\\arduino\\arduino.ino",
-    "port": "COM9"
+    "board": "arduino:avr:pro",
+    "sketch": "kaaiot\\esp\\esp.ino",
+    "port": "COM14",
+    "configuration": "cpu=16MHzatmega328"
 }
