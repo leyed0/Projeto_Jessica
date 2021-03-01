@@ -5,7 +5,7 @@
 SoftwareSerial ESP(2,3);
 
 void setup(){
-
+    ESP.begin(115200);
 }
 
 void loop(){
