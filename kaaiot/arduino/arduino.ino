@@ -2,6 +2,12 @@
 #include <SoftwareSerial.h>
 #include"cd4051.hpp"
 
+struct readings{
+    float Thermal[5];
+    uint8_t Continuity;
+    int Moisture;
+};
+
 //SoftwareSerial ESP(2,3);
 SoftwareSerial ESP(34,32);
 
