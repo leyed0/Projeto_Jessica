@@ -3,8 +3,8 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 
-const char* ssid = "Leyed";        // WiFi name
-const char* password = "syndra0812";    // WiFi password
+const char* ssid = "Vivo_AP_1";        // WiFi name
+const char* password = "4130240554";    // WiFi password
 const char* mqtt_server = "mqtt.cloud.kaaiot.com";
 const String TOKEN = "testee";        // Endpoint token - you get (or specify) it during device provisioning
 const String APP_VERSION = "c0gbf07b6q8e07efoha0-v1";  // Application version - you specify it during device provisioning
@@ -18,8 +18,9 @@ struct readings{
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-SoftwareSerial ARD(3,4);
-readings Read;
+//SoftwareSerial ARD(3,4);
+SoftwareSerial ARD(10,9);
+readings Read[3];
 
 void setup() {
   client.setServer(mqtt_server, 1883);
@@ -30,13 +31,39 @@ void setup() {
 }
 
 void loop() {
+    ReceiveData();
+    Printdata();
+    UploadData();
+}
+
+void Printdata(){
+  for (uint8_t j = 0; j < 3; j++)
+    {
+        Serial.print(j);
+        Serial.print(": ");
+        Serial.print("\t");
+        for (uint8_t i = 0; i < 5; i++)
+        {
+            Serial.print(Read[j].Thermal[i], 1);
+            Serial.print("\t");
+        }
+        Serial.print(Read[j].Continuity, BIN);
+        Serial.print("\t");
+        Serial.print(Read[j].Moisture);
+        Serial.print("\t ");
+    }
+    Serial.println();
 }
 
 void ReceiveData(){
   if (ARD.available()>=sizeof(readings))
     {
-        char* dp = (char*) &Read;
+        char* dp = (char*) &Read[0];
         for (int i = 0; i < sizeof(readings); i++) *dp++ = ARD.read(); 
+        char* dp2 = (char*) &Read[1];
+        for (int i = 0; i < sizeof(readings); i++) *dp2++ = ARD.read(); 
+        char* dp3 = (char*) &Read[2];
+        for (int i = 0; i < sizeof(readings); i++) *dp3++ = ARD.read(); 
         ARD.read();
     }
 }
@@ -49,9 +76,11 @@ void UploadData(){
   client.loop();
   DynamicJsonDocument telemetry(1023);
   telemetry.createNestedObject();
-  telemetry[0]["temperature"] = random(18, 23);
-  telemetry[0]["humidity"] = random(40, 60);
-  telemetry[0]["co2"] = random(900, 1200);
+  telemetry[0]["T1"] = Read.Thermal[0];
+  telemetry[0]["T2"] = Read.Thermal[1];
+  telemetry[0]["T3"] = Read.Thermal[2];
+  telemetry[0]["T4"] = Read.Thermal[3];
+  telemetry[0]["T5"] = Read.Thermal[4];
 
   String topic = "kp1/" + APP_VERSION + "/dcx/" + TOKEN + "/json";
   digitalWrite(LED_BUILTIN, LOW);
