@@ -76,11 +76,11 @@ void UploadData(){
   client.loop();
   DynamicJsonDocument telemetry(1023);
   telemetry.createNestedObject();
-  telemetry[0]["T1"] = Read.Thermal[0];
-  telemetry[0]["T2"] = Read.Thermal[1];
-  telemetry[0]["T3"] = Read.Thermal[2];
-  telemetry[0]["T4"] = Read.Thermal[3];
-  telemetry[0]["T5"] = Read.Thermal[4];
+  telemetry[0]["T1"] = Read->Thermal[0];
+  telemetry[0]["T2"] = Read->Thermal[1];
+  telemetry[0]["T3"] = Read->Thermal[2];
+  telemetry[0]["T4"] = Read->Thermal[3];
+  telemetry[0]["T5"] = Read->Thermal[4];
 
   String topic = "kp1/" + APP_VERSION + "/dcx/" + TOKEN + "/json";
   digitalWrite(LED_BUILTIN, LOW);
