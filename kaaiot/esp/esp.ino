@@ -27,7 +27,7 @@ void setup() {
   client.setCallback(callback);
   pinMode(LED_BUILTIN, OUTPUT);
   ARD.begin(115200);
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -60,7 +60,7 @@ bool ReceiveData(){
   if (ARD.available()>=sizeof(readings))
     {
         char* dp = (char*) &Read[0];
-        for (int i = 0; i < sizeof(readings); i++) *dp++ = ARD.read(); 
+        for (int i = 0; i < sizeof(readings); i++) *dp++ = ARD.read();
         char* dp2 = (char*) &Read[1];
         for (int i = 0; i < sizeof(readings); i++) *dp2++ = ARD.read(); 
         char* dp3 = (char*) &Read[2];
