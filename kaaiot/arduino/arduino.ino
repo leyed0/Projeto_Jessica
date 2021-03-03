@@ -34,20 +34,12 @@ void setup(){
     Serial.begin(115200);
     CD = new LeyedLib::CD4051(12,11,10,A0,cds,5);
     thermal = new MAX6675(9, CD->COM, 8);
-    pinMode(28, OUTPUT);
-    digitalWrite(28, LOW);
     while (!ESP.available()>sizeof("OK"))
     {
         delay(10);
     }
-    ESP.read();
-    ESP.read();
-    ESP.read();
+    Serial.Println(ESP.read());
     Serial.println("Ready!");
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(100);
-    digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop(){
