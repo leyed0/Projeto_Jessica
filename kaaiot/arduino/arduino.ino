@@ -36,6 +36,18 @@ void setup(){
     thermal = new MAX6675(9, CD->COM, 8);
     pinMode(28, OUTPUT);
     digitalWrite(28, LOW);
+    while (!ESP.available()>sizeof("OK"))
+    {
+        delay(10);
+    }
+    ESP.read();
+    ESP.read();
+    ESP.read();
+    Serial.println("Ready!");
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(100);
+    digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop(){

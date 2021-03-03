@@ -19,7 +19,7 @@ struct readings{
 WiFiClient espClient;
 PubSubClient client(espClient);
 //SoftwareSerial ARD(3,4);
-SoftwareSerial ARD(10,9);
+SoftwareSerial ARD(3,1);
 readings Read[3];
 
 void setup() {
@@ -27,7 +27,8 @@ void setup() {
   client.setCallback(callback);
   pinMode(LED_BUILTIN, OUTPUT);
   ARD.begin(115200);
-  Serial.begin(9600);
+  Serial.begin(115200);
+  ARD.print("ok");
 }
 
 void loop() {
