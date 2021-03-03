@@ -19,7 +19,7 @@ struct readings{
 WiFiClient espClient;
 PubSubClient client(espClient);
 //SoftwareSerial ARD(3,4);
-SoftwareSerial ARD(10,9);
+SoftwareSerial ARD(9,10);
 readings Read[3];
 
 void setup() {
@@ -31,9 +31,10 @@ void setup() {
 }
 
 void loop() {
-    ReceiveData();
-    Printdata();
-    UploadData();
+    if(ReceiveData()){
+      Printdata();
+      UploadData();
+    }
 }
 
 void Printdata(){
@@ -55,7 +56,7 @@ void Printdata(){
     Serial.println();
 }
 
-void ReceiveData(){
+bool ReceiveData(){
   if (ARD.available()>=sizeof(readings))
     {
         char* dp = (char*) &Read[0];
