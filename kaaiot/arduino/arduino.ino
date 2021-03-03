@@ -38,7 +38,7 @@ void setup(){
     {
         delay(10);
     }
-    Serial.Println(ESP.read());
+    Serial.println(ESP.read());
     Serial.println("Ready!");
 }
 
