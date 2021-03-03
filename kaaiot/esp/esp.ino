@@ -66,7 +66,9 @@ bool ReceiveData(){
         char* dp3 = (char*) &Read[2];
         for (int i = 0; i < sizeof(readings); i++) *dp3++ = ARD.read(); 
         ARD.read();
+        return true;
     }
+    return false;
 }
 
 void UploadData(){
