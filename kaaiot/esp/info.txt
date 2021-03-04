@@ -1,0 +1,7 @@
+gpio 10 - RX - verde
+gpio 9  - TX - branco
+
+
+
+Pin 2 - RX - branco
+pin 3 - TX - conversor - verde
