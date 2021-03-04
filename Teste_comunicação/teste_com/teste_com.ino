@@ -43,7 +43,6 @@ void loop(){
     delay(500);
 }
 
-
 void SendData(){
     const char* dp = (const char*) &Mat;
     for (int i = 0; i < sizeof(mat); i++) ESP.print(*dp++);
