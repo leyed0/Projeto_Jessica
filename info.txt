@@ -2,7 +2,7 @@ pinos:
     arduino - Macho :
         verde = 3 -> Verde = TX
         branco = 2 -> Amarelo = RX
-        laranja - 6
+        laranja - 6 - ???
         vermelho - 5
 
     esp - Femea :

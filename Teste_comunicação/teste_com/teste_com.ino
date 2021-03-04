@@ -1,5 +1,7 @@
 #include<SoftwareSerial.h>
 
+//AMARELO = TX
+//verde = RX
 // verde e amarelo
 SoftwareSerial ESP(3,2);
 

@@ -11,17 +11,13 @@ struct mat{
 //Serial é marrom e vermelho
 void setup(){
     Serial.begin(115200);
+    Serial1.begin(115200);
 }
 
 int a, b, op, r, c;
 
 void loop(){
-    if(Serial.available()){
-        a = Serial.read();
-        b = Serial.read();
-        op = Serial.read();
-        r = Serial.read();
-
+    if(ReceiveData()){
         Serial.print("received: ");
         Serial.print(a);
         Serial.print(op==0?" + ":op==1?" - ":op==2?" * ":" / ");
