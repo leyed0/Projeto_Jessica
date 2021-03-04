@@ -1,7 +1,8 @@
-#include <ARD8266WiFi.h>
+#include <ESP8266WiFi.h>
 #include<SoftwareSerial.h>
 
-SoftwareSerial ARD(DD0, DD1);
+//SoftwareSerial ARD(DD0, DD1);
+SoftwareSerial ARD(5, 13);
 
 void setup(){
     Serial.begin(115200);
@@ -25,3 +26,7 @@ void loop(){
         Serial.println(r);
     }
 }
+
+
+//GPIO 5 = D1 = 5
+//GPIO 13 = D7 = 13

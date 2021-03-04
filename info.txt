@@ -1,33 +1,20 @@
-15 termopares via max6675 - SPI
-3 sensor de humidade - analog ou digital?
+pinos:
+    arduino - Macho :
+        verde = 3 -> Verde = TX
+        branco = 2 -> Amarelo = RX
+        laranja - 6
+        vermelho - 5
 
-
-
-verde 
-branco
-
-
-arduino - Macho :
-	verde = 3 -> Verde = TX
-	branco = 2 -> Amarelo = RX
-	laranja - 6
-	vermelho - 5
-
-esp - Femea :
-	marrom - GPIO1 = TX
-	vermleho - GPIO3 = RX
-	preto - GPIO15 = D8
-	branco - GPIO13 = D7
-	cinza - GPIO5 = D1
-	roxo - GPIO16 = D0
-
+    esp - Femea :
+        marrom - GPIO1 = TX
+        vermleho - GPIO3 = RX
+        preto - GPIO15 = D8
+        branco - GPIO13 = D7
+        cinza - GPIO5 = D1 = 20
+        roxo - GPIO16 = D0 = 4
 
 verde+cinza
 amarelo+roxo
-
-
-pinos com falha:
-    03
     
 pinos shield:
     A0 = IO

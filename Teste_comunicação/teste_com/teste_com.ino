@@ -1,9 +1,9 @@
 #include<SoftwareSerial.h>
 
-SoftwareSerial ARD(3,2);
+SoftwareSerial ESP(3,2);
 
 void setup(){
-    ARD.begin(115200);
+    ESP.begin(115200);
     Serial.begin(115200);
 }
 
@@ -30,10 +30,10 @@ void loop(){
     default:
         break;
     }
-    ARD.print(a);
-    ARD.print(b);
-    ARD.print(op);
-    ARD.print(r);
+    ESP.print(a);
+    ESP.print(b);
+    ESP.print(op);
+    ESP.print(r);
     Serial.print(a);
     Serial.print(op==0?" + ":op==1?" - ":op==2?" * ":" / ");
     Serial.print(b);
