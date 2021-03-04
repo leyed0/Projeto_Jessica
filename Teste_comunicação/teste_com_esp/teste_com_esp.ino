@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include<SoftwareSerial.h>
-
-//SoftwareSerial ARD(DD0, DD1);
+// branco e cinza
+// SoftwareSerial ARD(DD0, DD1);
 SoftwareSerial ARD(5, 13);
 
 void setup(){

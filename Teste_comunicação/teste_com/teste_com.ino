@@ -1,5 +1,5 @@
 #include<SoftwareSerial.h>
-
+// verde e amarelo
 SoftwareSerial ESP(3,2);
 
 void setup(){
