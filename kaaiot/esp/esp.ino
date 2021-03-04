@@ -10,10 +10,10 @@ const String TOKEN = "testee";        // Endpoint token - you get (or specify) i
 const String APP_VERSION = "c0gbf07b6q8e07efoha0-v1";  // Application version - you specify it during device provisioning
 
 struct readings{
-    float Thermal[5];
     uint8_t Continuity;
-    int Moisture;
-    int chk;
+    uint8_t Moisture;
+    uint8_t chk;
+    float Thermal[5];
 };
 
 WiFiClient espClient;
@@ -26,9 +26,7 @@ void setup() {
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
   pinMode(LED_BUILTIN, OUTPUT);
-  ARD.begin(115200);
   Serial.begin(115200);
-  ARD.print("ok");
 }
 
 void loop() {

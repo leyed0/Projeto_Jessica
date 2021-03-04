@@ -6,7 +6,7 @@
 SoftwareSerial ESP(3,2);
 
 struct mat{
-    int a, b, op, r, c;
+    uint8_t a, b, op, r, c;
 }Mat;
 
 void setup(){

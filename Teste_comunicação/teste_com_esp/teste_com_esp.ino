@@ -5,7 +5,7 @@
 SoftwareSerial ARD(5, 13);
 
 struct mat{
-    int a, b, op, r, c;
+    uint8_t a, b, op, r, c;
 }Mat;
 
 //Serial é marrom e vermelho
@@ -35,6 +35,9 @@ bool ReceiveData(){
     }
     return false;
 }
-
+void SendData(){
+    const char* dp = (const char*) &Mat;
+    for (int i = 0; i < sizeof(mat); i++) ESP.print(*dp++);
+}
 //GPIO 5 = D1 = 5
 //GPIO 13 = D7 = 13
