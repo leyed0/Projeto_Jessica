@@ -36,7 +36,7 @@ bool ReceiveData(){
     {
         char* dp = (char*) &Mat;
         for (int i = 0; i < sizeof(mat); i++) *dp++ = Serial.read();
-        Serial.read();
+        
         return true;
     }
     return false;

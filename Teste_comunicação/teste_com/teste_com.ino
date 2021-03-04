@@ -34,17 +34,17 @@ void loop(){
     default:
         break;
     }
-    SendData(Mat);
+    SendData();
     Serial.print(Mat.a);
     Serial.print(Mat.op==0?" + ":Mat.op==1?" - ":Mat.op==2?" * ":" / ");
     Serial.print(Mat.b);
     Serial.print(" = ");
     Serial.println(Mat.r);
-    delay(200);
+    delay(500);
 }
 
 
-void SendData(mat val){
-    const char* dp = (const char*) &val;
+void SendData(){
+    const char* dp = (const char*) &Mat;
     for (int i = 0; i < sizeof(mat); i++) ESP.print(*dp++);
 }
