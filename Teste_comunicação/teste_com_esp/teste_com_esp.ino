@@ -12,11 +12,11 @@ void setup(){
 int a, b, op, r, c;
 
 void loop(){
-    if(ARD.available()){
-        a = ARD.read();
-        b = ARD.read();
-        op = ARD.read();
-        r = ARD.read();
+    if(Serial.available()){
+        a = Serial.read();
+        b = Serial.read();
+        op = Serial.read();
+        r = Serial.read();
 
         
         Serial.print(a);

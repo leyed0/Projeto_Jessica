@@ -13,8 +13,6 @@ pinos:
         cinza - GPIO5 = D1 = 20
         roxo - GPIO16 = D0 = 4
 
-verde+cinza
-amarelo+roxo
     
 pinos shield:
     A0 = IO
