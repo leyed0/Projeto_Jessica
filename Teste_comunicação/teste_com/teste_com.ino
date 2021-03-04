@@ -1,43 +1,50 @@
 #include<SoftwareSerial.h>
+
 // verde e amarelo
 SoftwareSerial ESP(3,2);
+
+struct mat{
+    int a, b, op, r, c;
+}Mat;
 
 void setup(){
     ESP.begin(115200);
     Serial.begin(115200);
 }
 
-int a, b, op, r, c;
 void loop(){
-    a = random(1,9);
-    b = random(1,9);
-    op = random(0,4);
-    switch (op)
+    Mat.a = random(1,9);
+    Mat.b = random(1,9);
+    Mat.op = random(0,4);
+    switch (Mat.op)
     {
     case 0:
-        r = a+b;
+        Mat.r = Mat.a+Mat.b;
         break;
     case 1:
-        r = a-b;
+        Mat.r = Mat.a-Mat.b;
         break;
     case 2:
-        r = a*b;
+        Mat.r = Mat.a*Mat.b;
         break;
     case 3:
-        r = a/b;
+        Mat.r = Mat.a/Mat.b;
         break;
     
     default:
         break;
     }
-    ESP.print(a);
-    ESP.print(b);
-    ESP.print(op);
-    ESP.print(r);
-    Serial.print(a);
-    Serial.print(op==0?" + ":op==1?" - ":op==2?" * ":" / ");
-    Serial.print(b);
+    SendData(Mat);
+    Serial.print(Mat.a);
+    Serial.print(Mat.op==0?" + ":Mat.op==1?" - ":Mat.op==2?" * ":" / ");
+    Serial.print(Mat.b);
     Serial.print(" = ");
-    Serial.println(r);
+    Serial.println(Mat.r);
     delay(200);
+}
+
+
+void SendData(mat val){
+    const char* dp = (const char*) &val;
+    for (int i = 0; i < sizeof(mat); i++) ESP.print(*dp++);
 }
