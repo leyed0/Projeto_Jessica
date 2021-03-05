@@ -13,20 +13,18 @@ struct readings{
     uint8_t Continuity;
     uint8_t Moisture;
     uint8_t chk;
-    float Thermal[5];
+    uint8_t Thermal[5];
 };
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-//SoftwareSerial ARD(3,4);
-SoftwareSerial ARD(3,1);
 readings Read[3];
 
 void setup() {
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
-  pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(115200);
+  setup_wifi();
 }
 
 void loop() {
@@ -56,15 +54,15 @@ void Printdata(){
 }
 
 bool ReceiveData(){
-  if (ARD.available()>=sizeof(readings))
+  if (Serial.available()>=sizeof(readings))
     {
         char* dp = (char*) &Read[0];
-        for (int i = 0; i < sizeof(readings); i++) *dp++ = ARD.read();
+        for (int i = 0; i < sizeof(readings); i++) *dp++ = Serial.read();
         char* dp2 = (char*) &Read[1];
-        for (int i = 0; i < sizeof(readings); i++) *dp2++ = ARD.read(); 
+        for (int i = 0; i < sizeof(readings); i++) *dp2++ = Serial.read(); 
         char* dp3 = (char*) &Read[2];
-        for (int i = 0; i < sizeof(readings); i++) *dp3++ = ARD.read(); 
-        ARD.read();
+        for (int i = 0; i < sizeof(readings); i++) *dp3++ = Serial.read(); 
+        Serial.read();
         return true;
     }
     return false;

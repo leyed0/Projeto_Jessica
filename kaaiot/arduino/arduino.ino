@@ -8,16 +8,13 @@ struct readings{
     uint8_t Continuity;
     uint8_t Moisture;
     uint8_t chk;
-    float Thermal[5];
+    uint8_t Thermal[5];
 };
 struct probes
 {
     const uint8_t Thermal[5],Continuity[5], Moisture;
     readings Read;
 };
-
-//SoftwareSerial ESP(2,3);
-//SoftwareSerial ESP(34,32);
 
 SoftwareSerial ESP(2,3);
 int del=40;
@@ -34,12 +31,12 @@ void setup(){
     Serial.begin(115200);
     CD = new LeyedLib::CD4051(12,11,10,A0,cds,5);
     thermal = new MAX6675(9, CD->COM, 8);
-    while (!ESP.available()>sizeof("OK"))
-    {
-        delay(10);
-    }
-    Serial.println(ESP.read());
-    Serial.println("Ready!");
+    // while (!ESP.available()>sizeof("OK"))
+    // {
+    //     delay(10);
+    // }
+    // Serial.println(ESP.read());
+    // Serial.println("Ready!");
 }
 
 void loop(){
@@ -61,7 +58,7 @@ void readprobe(uint8_t pb){
         digitalWrite(CD->COM, HIGH);
         digitalWrite(CD->SetIO((i+(11*pb)), LeyedLib::ArduinoPinModes::Output),LOW);
         delay(del);
-        PT[pb].Read.Thermal[i]=thermal->readCelsius();
+        PT[pb].Read.Thermal[i]=thermal->readCelsius()*10;
         CD->reset();
         PT[pb].Read.chk+=PT[pb].Read.Thermal[i];
     }
