@@ -16,7 +16,7 @@ struct probes
     readings Read;
 };
 
-SoftwareSerial ESP(2,3);
+SoftwareSerial ESP(3,2);
 int del=40;
 LeyedLib::CD4051* CD;
 MAX6675 *thermal;

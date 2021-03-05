@@ -24,14 +24,21 @@ void setup() {
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
   Serial.begin(115200);
-  setup_wifi();
+  Serial.println("setup");
 }
 
 void loop() {
-    if(ReceiveData()){
-      Printdata();
-      UploadData();
-    }
+  setup_wifi();
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+
+  if(ReceiveData()){
+    Printdata();
+    UploadData();
+  }
 }
 
 void Printdata(){
@@ -54,7 +61,7 @@ void Printdata(){
 }
 
 bool ReceiveData(){
-  if (Serial.available()>=sizeof(readings))
+  if (Serial.available()>=(sizeof(readings)*3))
     {
         char* dp = (char*) &Read[0];
         for (int i = 0; i < sizeof(readings); i++) *dp++ = Serial.read();
