@@ -46,7 +46,7 @@ void loop(){
         readprobe(1);
         readprobe(2);
         SendData();
-        Serial.println(millis()-tempo;);
+        Serial.println(millis()-tempo);
         tempo = millis();
     }
 }
