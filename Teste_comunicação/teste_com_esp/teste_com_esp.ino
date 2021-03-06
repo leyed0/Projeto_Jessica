@@ -2,7 +2,6 @@
 #include<SoftwareSerial.h>
 // branco e cinza
 // SoftwareSerial ARD(DD0, DD1);
-SoftwareSerial ARD(5, 13);
 
 struct mat{
     uint8_t a, b, op, r, c;
@@ -11,7 +10,6 @@ struct mat{
 //Serial é marrom e vermelho
 void setup(){
     Serial.begin(115200);
-    Serial1.begin(115200);
 }
 
 void loop(){
