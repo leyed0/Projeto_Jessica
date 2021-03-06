@@ -51,7 +51,7 @@ void Printdata(){
         Serial.print("\t");
         for (uint8_t i = 0; i < 5; i++)
         {
-            Serial.print(Read[j].Thermal[i], 1);
+            Serial.print((float)Read[j].Thermal[i]/10, 1);
             Serial.print("\t");
         }
         Serial.print(Read[j].Continuity, BIN);

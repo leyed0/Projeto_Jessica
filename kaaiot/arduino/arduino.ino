@@ -39,14 +39,16 @@ void setup(){
     // Serial.println("Ready!");
 }
 
+int tempo = millis();
 void loop(){
-    int tempo = millis();
-    readprobe(0);
-    readprobe(1);
-    readprobe(2);
-    SendData();
-    tempo=millis()-tempo;
-    Serial.println(tempo);
+    if(millis()-tempo>=1000){
+        readprobe(0);
+        readprobe(1);
+        readprobe(2);
+        SendData();
+        Serial.println(millis()-tempo;);
+        tempo = millis();
+    }
 }
 
 void readprobe(uint8_t pb){
