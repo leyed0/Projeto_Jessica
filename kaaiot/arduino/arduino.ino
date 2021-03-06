@@ -71,7 +71,7 @@ void readprobe(uint8_t pb){
     }
     PT[pb].Read.chk+=PT[pb].Read.Continuity;
     digitalWrite(CD->SetIO(((10)+(11*pb)), LeyedLib::ArduinoPinModes::Input_Analog),LOW);
-    PT[pb].Read.Moisture=analogRead(CD->COM);
+    PT[pb].Read.Moisture=map(analogRead(CD->COM),0,1023,0,255);
     CD->reset();
     PT[pb].Read.chk+=PT[pb].Read.Moisture;
 }
