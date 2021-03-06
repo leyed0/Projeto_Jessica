@@ -83,23 +83,23 @@ void UploadData(){
   DynamicJsonDocument telemetry1(1023);
   DynamicJsonDocument telemetry2(1023);
   telemetry.createNestedObject();
-  telemetry[0]["T1"] = <float>Read[0]->Thermal[0]/10;
-  telemetry[0]["T2"] = <float>Read[0]->Thermal[1]/10;
-  telemetry[0]["T3"] = <float>Read[0]->Thermal[2]/10;
-  telemetry[0]["T4"] = <float>Read[0]->Thermal[3]/10;
-  telemetry[0]["T5"] = <float>Read[0]->Thermal[4]/10;
+  telemetry[0]["T1"] = (float)Read[0].Thermal[0]/10;
+  telemetry[0]["T2"] = (float)Read[0].Thermal[1]/10;
+  telemetry[0]["T3"] = (float)Read[0].Thermal[2]/10;
+  telemetry[0]["T4"] = (float)Read[0].Thermal[3]/10;
+  telemetry[0]["T5"] = (float)Read[0].Thermal[4]/10;
   
-  telemetry1[0]["T1"] = <float>Read[1]->Thermal[0]/10;
-  telemetry1[0]["T2"] = <float>Read[1]->Thermal[1]/10;
-  telemetry1[0]["T3"] = <float>Read[1]->Thermal[2]/10;
-  telemetry1[0]["T4"] = <float>Read[1]->Thermal[3]/10;
-  telemetry1[0]["T5"] = <float>Read[1]->Thermal[4]/10;
+  telemetry1[0]["T1"] = (float)Read[1].Thermal[0]/10;
+  telemetry1[0]["T2"] = (float)Read[1].Thermal[1]/10;
+  telemetry1[0]["T3"] = (float)Read[1].Thermal[2]/10;
+  telemetry1[0]["T4"] = (float)Read[1].Thermal[3]/10;
+  telemetry1[0]["T5"] = (float)Read[1].Thermal[4]/10;
   
-  telemetry2[0]["T1"] = <float>Read[2]->Thermal[0]/10;
-  telemetry2[0]["T2"] = <float>Read[2]->Thermal[1]/10;
-  telemetry2[0]["T3"] = <float>Read[2]->Thermal[2]/10;
-  telemetry2[0]["T4"] = <float>Read[2]->Thermal[3]/10;
-  telemetry2[0]["T5"] = <float>Read[2]->Thermal[4]/10;
+  telemetry2[0]["T1"] = (float)Read[2].Thermal[0]/10;
+  telemetry2[0]["T2"] = (float)Read[2].Thermal[1]/10;
+  telemetry2[0]["T3"] = (float)Read[2].Thermal[2]/10;
+  telemetry2[0]["T4"] = (float)Read[2].Thermal[3]/10;
+  telemetry2[0]["T5"] = (float)Read[2].Thermal[4]/10;
 
   String topic = "kp1/" + APP_VERSION + "/dcx/" + TOKEN + "/json";
   String topic1 = "kp1/" + APP_VERSION + "/dcx/" + TOKEN1 + "/json";

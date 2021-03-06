@@ -78,7 +78,7 @@ void SendData(){
     readings Reads[3];
     Reads[0] = PT[0].Read;
     Reads[1] = PT[1].Read;
-    Reads[2] = PT[2].Read
+    Reads[2] = PT[2].Read;
     const char* dp = (const char*) &Reads;
     for (int i = 0; i < (sizeof(readings)*3); i++) ESP.print(*dp++);
 }
