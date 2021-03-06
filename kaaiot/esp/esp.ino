@@ -6,8 +6,10 @@
 const char* ssid = "Vivo_AP_1";        // WiFi name
 const char* password = "4130240554";    // WiFi password
 const char* mqtt_server = "mqtt.cloud.kaaiot.com";
-const String TOKEN = "testee";        // Endpoint token - you get (or specify) it during device provisioning
-const String APP_VERSION = "c0gbf07b6q8e07efoha0-v1";  // Application version - you specify it during device provisioning
+const String TOKEN = "ESP_0";        // Endpoint token - you get (or specify) it during device provisioning
+const String TOKEN1 = "ESP_1";        // Endpoint token - you get (or specify) it during device provisioning
+const String TOKEN2 = "ESP_2";        // Endpoint token - you get (or specify) it during device provisioning
+const String APP_VERSION = "c11qdq2rqa51q5h5slkg-v1";  // Application version - you specify it during device provisioning
 
 struct readings{
     uint8_t Continuity;
@@ -25,10 +27,10 @@ void setup() {
   client.setCallback(callback);
   Serial.begin(115200);
   Serial.println("setup");
+  setup_wifi();
 }
 
 void loop() {
-  setup_wifi();
   if (!client.connected()) {
     reconnect();
   }
@@ -63,12 +65,8 @@ void Printdata(){
 bool ReceiveData(){
   if (Serial.available()>=(sizeof(readings)*3))
     {
-        char* dp = (char*) &Read[0];
-        for (int i = 0; i < sizeof(readings); i++) *dp++ = Serial.read();
-        char* dp2 = (char*) &Read[1];
-        for (int i = 0; i < sizeof(readings); i++) *dp2++ = Serial.read(); 
-        char* dp3 = (char*) &Read[2];
-        for (int i = 0; i < sizeof(readings); i++) *dp3++ = Serial.read(); 
+        char* dp = (char*) &Read;
+        for (int i = 0; i < (sizeof(readings)*3); i++) *dp++ = Serial.read();
         Serial.read();
         return true;
     }
@@ -82,16 +80,35 @@ void UploadData(){
   }
   client.loop();
   DynamicJsonDocument telemetry(1023);
+  DynamicJsonDocument telemetry1(1023);
+  DynamicJsonDocument telemetry2(1023);
   telemetry.createNestedObject();
-  telemetry[0]["T1"] = Read->Thermal[0];
-  telemetry[0]["T2"] = Read->Thermal[1];
-  telemetry[0]["T3"] = Read->Thermal[2];
-  telemetry[0]["T4"] = Read->Thermal[3];
-  telemetry[0]["T5"] = Read->Thermal[4];
+  telemetry[0]["T1"] = <float>Read[0]->Thermal[0]/10;
+  telemetry[0]["T2"] = <float>Read[0]->Thermal[1]/10;
+  telemetry[0]["T3"] = <float>Read[0]->Thermal[2]/10;
+  telemetry[0]["T4"] = <float>Read[0]->Thermal[3]/10;
+  telemetry[0]["T5"] = <float>Read[0]->Thermal[4]/10;
+  
+  telemetry1[0]["T1"] = <float>Read[1]->Thermal[0]/10;
+  telemetry1[0]["T2"] = <float>Read[1]->Thermal[1]/10;
+  telemetry1[0]["T3"] = <float>Read[1]->Thermal[2]/10;
+  telemetry1[0]["T4"] = <float>Read[1]->Thermal[3]/10;
+  telemetry1[0]["T5"] = <float>Read[1]->Thermal[4]/10;
+  
+  telemetry2[0]["T1"] = <float>Read[2]->Thermal[0]/10;
+  telemetry2[0]["T2"] = <float>Read[2]->Thermal[1]/10;
+  telemetry2[0]["T3"] = <float>Read[2]->Thermal[2]/10;
+  telemetry2[0]["T4"] = <float>Read[2]->Thermal[3]/10;
+  telemetry2[0]["T5"] = <float>Read[2]->Thermal[4]/10;
 
   String topic = "kp1/" + APP_VERSION + "/dcx/" + TOKEN + "/json";
+  String topic1 = "kp1/" + APP_VERSION + "/dcx/" + TOKEN1 + "/json";
+  String topic2 = "kp1/" + APP_VERSION + "/dcx/" + TOKEN2 + "/json";
+
   digitalWrite(LED_BUILTIN, LOW);
   client.publish(topic.c_str(), telemetry.as<String>().c_str());
+  client.publish(topic1.c_str(), telemetry1.as<String>().c_str());
+  client.publish(topic2.c_str(), telemetry2.as<String>().c_str());
   Serial.println("Published on topic: " + topic);
   digitalWrite(LED_BUILTIN, HIGH);
 }

@@ -44,9 +44,7 @@ void loop(){
     readprobe(0);
     readprobe(1);
     readprobe(2);
-    SendData(PT[0].Read);
-    SendData(PT[1].Read);
-    SendData(PT[2].Read);
+    SendData();
     tempo=millis()-tempo;
     Serial.println(tempo);
 }
@@ -76,9 +74,13 @@ void readprobe(uint8_t pb){
     PT[pb].Read.chk+=PT[pb].Read.Moisture;
 }
 
-void SendData(readings val){
-    const char* dp = (const char*) &val;
-    for (int i = 0; i < sizeof(readings); i++) ESP.print(*dp++);
+void SendData(){
+    readings Reads[3];
+    Reads[0] = PT[0].Read;
+    Reads[1] = PT[1].Read;
+    Reads[2] = PT[2].Read
+    const char* dp = (const char*) &Reads;
+    for (int i = 0; i < (sizeof(readings)*3); i++) ESP.print(*dp++);
 }
 
 //     A0 = IO
