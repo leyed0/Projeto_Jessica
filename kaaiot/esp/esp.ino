@@ -109,7 +109,7 @@ void UploadData(){
   client.publish(topic.c_str(), telemetry.as<String>().c_str());
   client.publish(topic1.c_str(), telemetry1.as<String>().c_str());
   client.publish(topic2.c_str(), telemetry2.as<String>().c_str());
-  Serial.println("Published on topic: " + topic);
+  //Serial.println("Published on topic: " + topic);
   digitalWrite(LED_BUILTIN, HIGH);
 }
 

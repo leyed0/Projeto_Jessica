@@ -17,7 +17,7 @@ struct probes
 };
 
 SoftwareSerial ESP(3,2);
-int del=40;
+int del=60;
 LeyedLib::CD4051* CD;
 MAX6675 *thermal;
 probes PT[3] = {{0 ,1 , 2, 3, 4, 5, 6, 7, 8, 9,10},
