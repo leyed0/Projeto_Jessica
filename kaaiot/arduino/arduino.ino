@@ -1,13 +1,13 @@
 #include <arduino.h>
 #include <SoftwareSerial.h>
-#include "cd4051.hpp"
 #include "max6675.h"
 #include <SoftwareSerial.h>
+#include "cd4051.hpp"
 
 struct readings{
     uint8_t Continuity;
     uint8_t Moisture;
-    uint8_t chk;
+    //uint8_t chk;
     uint8_t Thermal[5];
 };
 struct probes
@@ -17,7 +17,7 @@ struct probes
 };
 
 SoftwareSerial ESP(3,2);
-int del=60;
+int del=50;
 LeyedLib::CD4051* CD;
 MAX6675 *thermal;
 probes PT[3] = {{0 ,1 , 2, 3, 4, 5, 6, 7, 8, 9,10},
@@ -52,15 +52,16 @@ void loop(){
 }
 
 void readprobe(uint8_t pb){
-    PT[pb].Read.chk=0;
+    //PT[pb].Read.chk=0;
     for (int i = 0; i < 5; i++)
     {
         digitalWrite(CD->COM, HIGH);
         digitalWrite(CD->SetIO((i+(11*pb)), LeyedLib::ArduinoPinModes::Output),LOW);
         delay(del);
         PT[pb].Read.Thermal[i]=thermal->readCelsius()*10;
+        delay(del);
         CD->reset();
-        PT[pb].Read.chk+=PT[pb].Read.Thermal[i];
+        //PT[pb].Read.chk+=PT[pb].Read.Thermal[i];
     }
     PT[pb].Read.Continuity=0;
     for (int i = 0; i < 5; i++)
@@ -69,11 +70,11 @@ void readprobe(uint8_t pb){
         PT[pb].Read.Continuity|=digitalRead(CD->COM)<<i;
         CD->reset();
     }
-    PT[pb].Read.chk+=PT[pb].Read.Continuity;
+    //PT[pb].Read.chk+=PT[pb].Read.Continuity;
     digitalWrite(CD->SetIO(((10)+(11*pb)), LeyedLib::ArduinoPinModes::Input_Analog),LOW);
     PT[pb].Read.Moisture=map(analogRead(CD->COM),0,1023,0,255);
     CD->reset();
-    PT[pb].Read.chk+=PT[pb].Read.Moisture;
+    //PT[pb].Read.chk+=PT[pb].Read.Moisture;
 }
 
 void SendData(){

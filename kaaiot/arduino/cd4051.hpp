@@ -17,7 +17,6 @@ namespace LeyedLib{
             QTD = qtd;
             EN = new uint8_t[QTD];
             COM = com;
-            Serial.println(QTD);
             for (int i = 0; i < QTD; i++)
             {
                 EN[i]=en[i];
@@ -27,9 +26,6 @@ namespace LeyedLib{
         }
 
         void reset(){
-            digitalWrite(A, LOW);
-            digitalWrite(B, LOW);
-            digitalWrite(C, LOW);
             for(int i=0;i<QTD;i++){
                 digitalWrite(EN[i], HIGH);
             }

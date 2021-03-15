@@ -14,7 +14,7 @@ const String APP_VERSION = "c11qdq2rqa51q5h5slkg-v1";  // Application version - 
 struct readings{
     uint8_t Continuity;
     uint8_t Moisture;
-    uint8_t chk;
+    //uint8_t chk;
     uint8_t Thermal[5];
 };
 
