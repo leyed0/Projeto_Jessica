@@ -15,7 +15,7 @@ struct readings{
     uint8_t Continuity;
     uint8_t Moisture;
     //uint8_t chk;
-    uint8_t Thermal[5];
+    uint16_t Thermal[5];
 };
 
 WiFiClient espClient;
@@ -51,7 +51,7 @@ void Printdata(){
         Serial.print("\t");
         for (uint8_t i = 0; i < 5; i++)
         {
-            Serial.print((float)Read[j].Thermal[i]/10, 1);
+            Serial.print((float)Read[j].Thermal[i]/100, 1);
             Serial.print("\t");
         }
         Serial.print(Read[j].Continuity, BIN);
@@ -83,23 +83,29 @@ void UploadData(){
   DynamicJsonDocument telemetry1(1023);
   DynamicJsonDocument telemetry2(1023);
   telemetry.createNestedObject();
-  telemetry[0]["T1"] = (float)Read[0].Thermal[0]/10;
-  telemetry[0]["T2"] = (float)Read[0].Thermal[1]/10;
-  telemetry[0]["T3"] = (float)Read[0].Thermal[2]/10;
-  telemetry[0]["T4"] = (float)Read[0].Thermal[3]/10;
-  telemetry[0]["T5"] = (float)Read[0].Thermal[4]/10;
+  telemetry[0]["T1"] = (float)Read[0].Thermal[0]/100;
+  telemetry[0]["T2"] = (float)Read[0].Thermal[1]/100;
+  telemetry[0]["T3"] = (float)Read[0].Thermal[2]/100;
+  telemetry[0]["T4"] = (float)Read[0].Thermal[3]/100;
+  telemetry[0]["T5"] = (float)Read[0].Thermal[4]/100;
+  telemetry[0]["CNT"] = Read[0].Continuity;
+  telemetry[0]["Moist"] = Read[0].Moisture;
   
-  telemetry1[0]["T1"] = (float)Read[1].Thermal[0]/10;
-  telemetry1[0]["T2"] = (float)Read[1].Thermal[1]/10;
-  telemetry1[0]["T3"] = (float)Read[1].Thermal[2]/10;
-  telemetry1[0]["T4"] = (float)Read[1].Thermal[3]/10;
-  telemetry1[0]["T5"] = (float)Read[1].Thermal[4]/10;
+  telemetry1[0]["T1"] = (float)Read[1].Thermal[0]/100;
+  telemetry1[0]["T2"] = (float)Read[1].Thermal[1]/100;
+  telemetry1[0]["T3"] = (float)Read[1].Thermal[2]/100;
+  telemetry1[0]["T4"] = (float)Read[1].Thermal[3]/100;
+  telemetry1[0]["T5"] = (float)Read[1].Thermal[4]/100;
+  telemetry1[0]["CNT"] = Read[1].Continuity;
+  telemetry1[0]["Moist"] = Read[1]].Moisture;
   
-  telemetry2[0]["T1"] = (float)Read[2].Thermal[0]/10;
-  telemetry2[0]["T2"] = (float)Read[2].Thermal[1]/10;
-  telemetry2[0]["T3"] = (float)Read[2].Thermal[2]/10;
-  telemetry2[0]["T4"] = (float)Read[2].Thermal[3]/10;
-  telemetry2[0]["T5"] = (float)Read[2].Thermal[4]/10;
+  telemetry2[0]["T1"] = (float)Read[2].Thermal[0]/100;
+  telemetry2[0]["T2"] = (float)Read[2].Thermal[1]/100;
+  telemetry2[0]["T3"] = (float)Read[2].Thermal[2]/100;
+  telemetry2[0]["T4"] = (float)Read[2].Thermal[3]/100;
+  telemetry2[0]["T5"] = (float)Read[2].Thermal[4]/100;
+  telemetry2[0]["CNT"] = Read[2].Continuity;
+  telemetry2[0]["Moist"] = Read[2].Moisture;
 
   String topic = "kp1/" + APP_VERSION + "/dcx/" + TOKEN + "/json";
   String topic1 = "kp1/" + APP_VERSION + "/dcx/" + TOKEN1 + "/json";

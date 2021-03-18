@@ -8,7 +8,7 @@ struct readings{
     uint8_t Continuity;
     uint8_t Moisture;
     //uint8_t chk;
-    float Thermal[5];
+    uint16_t Thermal[5];
 };
 struct probes
 {
@@ -59,7 +59,7 @@ void readprobe(uint8_t pb){
         digitalWrite(CD->COM, HIGH);
         digitalWrite(CD->SetIO((i+(11*pb)), LeyedLib::ArduinoPinModes::Output),LOW);
         delay(del);
-        PT[pb].Read.Thermal[i]=thermal->readCelsius();
+        PT[pb].Read.Thermal[i]=(uint16_t)thermal->readCelsius()*100;
         delay(del);
         CD->reset();
         //PT[pb].Read.chk+=PT[pb].Read.Thermal[i];
@@ -95,7 +95,7 @@ void Printdata(){
         Serial.print("\t");
         for (uint8_t i = 0; i < 5; i++)
         {
-            Serial.print(PT[j].Read.Thermal[i], 1);
+            Serial.print((float)PT[j].Read.Thermal[i]/100, 1);
             Serial.print("\t");
         }
         Serial.print(PT[j].Read.Continuity, BIN);

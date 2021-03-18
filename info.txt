@@ -11,7 +11,7 @@ pinos:
         preto - GPIO15 = D8
         branco - GPIO13 = D7
         cinza - GPIO5 = D1 = 20
-        roxo - GPIO16 = D0 = 4
+        roxo - GPIO16 = D0 = 47
 
     
 pinos shield:
