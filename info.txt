@@ -1,3 +1,6 @@
+arduino 2 = rx = bco = axul = tx
+
+
 pinos:
     arduino - Macho :
         verde = 3 -> Verde = TX

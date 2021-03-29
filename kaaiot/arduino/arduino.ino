@@ -5,6 +5,7 @@
 #include "cd4051.hpp"
 
 struct readings{
+    //uint8_t ID;
     uint8_t Continuity;
     uint8_t Moisture;
     //uint8_t chk;
@@ -17,7 +18,7 @@ struct probes
 };
 
 SoftwareSerial ESP(3,2);
-int del=50;
+int del=25, intervalo=1000;
 LeyedLib::CD4051* CD;
 MAX6675 *thermal;
 probes PT[3] = {{0 ,1 , 2, 3, 4, 5, 6, 7, 8, 9,10},
@@ -27,28 +28,25 @@ probes PT[3] = {{0 ,1 , 2, 3, 4, 5, 6, 7, 8, 9,10},
 uint8_t cds[] = {A5, A4,A3,A2,A1};
 
 void setup(){
+    pinMode(7, OUTPUT);
     ESP.begin(115200);
     Serial.begin(115200);
     CD = new LeyedLib::CD4051(12,11,10,A0,cds,5);
     thermal = new MAX6675(9, CD->COM, 8);
-    // while (!ESP.available()>sizeof("OK"))
-    // {
-    //     delay(10);
-    // }
-    // Serial.println(ESP.read());
-    // Serial.println("Ready!");
+    digitalWrite(7,LOW);
 }
 
-int tempo = millis();
+unsigned long tempo = millis();
 void loop(){
-    if(millis()-tempo>=1000){
+    if(tempo+intervalo<=millis()){
+        tempo+=intervalo;
         readprobe(0);
         readprobe(1);
         readprobe(2);
         SendData();
-        Printdata();
-        Serial.println(millis()-tempo);
-        tempo = millis();
+        Serial.println(millis());
+        Serial.println(tempo);
+        //Printdata();
     }
 }
 
@@ -59,18 +57,20 @@ void readprobe(uint8_t pb){
         digitalWrite(CD->COM, HIGH);
         digitalWrite(CD->SetIO((i+(11*pb)), LeyedLib::ArduinoPinModes::Output),LOW);
         delay(del);
-        PT[pb].Read.Thermal[i]=(uint16_t)thermal->readCelsius()*100;
-        delay(del);
+        PT[pb].Read.Thermal[i]=(uint16_t)(thermal->readCelsius()*100);
+        //delay(del);
         CD->reset();
         //PT[pb].Read.chk+=PT[pb].Read.Thermal[i];
     }
     PT[pb].Read.Continuity=0;
+    digitalWrite(7,HIGH);
     for (int i = 0; i < 5; i++)
     {
         digitalWrite(CD->SetIO(((i+5)+(11*pb)), LeyedLib::ArduinoPinModes::Input_PullUp),LOW);
         PT[pb].Read.Continuity|=digitalRead(CD->COM)<<i;
         CD->reset();
     }
+    digitalWrite(7,LOW);
     //PT[pb].Read.chk+=PT[pb].Read.Continuity;
     digitalWrite(CD->SetIO(((10)+(11*pb)), LeyedLib::ArduinoPinModes::Input_Analog),LOW);
     PT[pb].Read.Moisture=map(analogRead(CD->COM),0,1023,0,255);
@@ -84,7 +84,10 @@ void SendData(){
     Reads[1] = PT[1].Read;
     Reads[2] = PT[2].Read;
     const char* dp = (const char*) &Reads;
-    for (int i = 0; i < (sizeof(readings)*3); i++) ESP.print(*dp++);
+
+    ESP.print('W');
+    //delay(50);
+    for (int i = 0; i < (sizeof(Reads)); i++) ESP.write(*dp++);
 }
 
 void Printdata(){

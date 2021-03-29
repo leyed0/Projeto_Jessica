@@ -5,6 +5,8 @@
 
 const char* ssid = "Vivo_AP_1";        // WiFi name
 const char* password = "4130240554";    // WiFi password
+//const char* ssid = "Leyed";        // WiFi name
+//const char* password = "syndra0812";    // WiFi password
 const char* mqtt_server = "mqtt.cloud.kaaiot.com";
 const String TOKEN = "ESP_0";        // Endpoint token - you get (or specify) it during device provisioning
 const String TOKEN1 = "ESP_1";        // Endpoint token - you get (or specify) it during device provisioning
@@ -12,6 +14,7 @@ const String TOKEN2 = "ESP_2";        // Endpoint token - you get (or specify) i
 const String APP_VERSION = "c11qdq2rqa51q5h5slkg-v1";  // Application version - you specify it during device provisioning
 
 struct readings{
+    //uint8_t ID;
     uint8_t Continuity;
     uint8_t Moisture;
     //uint8_t chk;
@@ -23,11 +26,13 @@ PubSubClient client(espClient);
 readings Read[3];
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
   Serial.begin(115200);
-  Serial.println("setup");
   setup_wifi();
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop() {
@@ -54,7 +59,9 @@ void Printdata(){
             Serial.print((float)Read[j].Thermal[i]/100, 1);
             Serial.print("\t");
         }
-        Serial.print(Read[j].Continuity, BIN);
+        String tmp = String((Read[j].Continuity & 1)?'0':'1')+ String((Read[j].Continuity & 2)?'0':'1')+ String((Read[j].Continuity & 4)?'0':'1')+ String((Read[j].Continuity & 8)?'0':'1')+ String((Read[j].Continuity & 16)?'0':'1');
+        Serial.print(tmp);
+        //Serial.print(Read[j].Continuity, BIN);
         Serial.print("\t");
         Serial.print(Read[j].Moisture);
         Serial.print("\t ");
@@ -63,14 +70,39 @@ void Printdata(){
 }
 
 bool ReceiveData(){
-  if (Serial.available()>=(sizeof(readings)*3))
-    {
-        char* dp = (char*) &Read;
-        for (int i = 0; i < (sizeof(readings)*3); i++) *dp++ = Serial.read();
-        Serial.read();
-        return true;
-    }
-    return false;
+  char* dp = (char*) &Read;
+  if(Serial.available()){
+    //Serial.println("AV");
+  if(Serial.read()=='W')
+  {
+    do{
+      delay(2);
+    }while(Serial.available()<sizeof(Read));
+    for (int i = 0; i < (sizeof(Read)); i++) *dp++ = Serial.read();
+    //Serial.read();
+    //Serial.flush();
+    // readings temp;
+    //   char* dp = (char*) &temp;
+    //   for (int i = 0; i < (sizeof(readings)); i++) *dp++ = Serial.read();
+    //   switch (temp.ID)
+    //   {
+    //   case 0:
+    //     Read[0] = temp;
+    //     break;
+    //   case 1:
+    //     Read[1] = temp;
+    //     break;
+    //   case 2:
+    //     Read[2] = temp;
+    //     break;
+    //   default:
+    //     break;
+    //   }
+    //   Serial.read();
+     return true;
+  }
+  }
+  return false;
 }
 
 void UploadData(){
@@ -78,6 +110,7 @@ void UploadData(){
   if (!client.connected()) {
     reconnect();
   }
+  digitalWrite(LED_BUILTIN, LOW);
   client.loop();
   DynamicJsonDocument telemetry(1023);
   DynamicJsonDocument telemetry1(1023);
@@ -89,7 +122,7 @@ void UploadData(){
   telemetry[0]["T4"] = (float)Read[0].Thermal[3]/100;
   telemetry[0]["T5"] = (float)Read[0].Thermal[4]/100;
   telemetry[0]["CNT"] = Read[0].Continuity;
-  telemetry[0]["Moist"] = Read[0].Moisture;
+  telemetry[0]["Moist"] = (float)map(Read[0].Moisture,0,255,0,100);
   
   telemetry1[0]["T1"] = (float)Read[1].Thermal[0]/100;
   telemetry1[0]["T2"] = (float)Read[1].Thermal[1]/100;
@@ -97,7 +130,7 @@ void UploadData(){
   telemetry1[0]["T4"] = (float)Read[1].Thermal[3]/100;
   telemetry1[0]["T5"] = (float)Read[1].Thermal[4]/100;
   telemetry1[0]["CNT"] = Read[1].Continuity;
-  telemetry1[0]["Moist"] = Read[1]].Moisture;
+  telemetry1[0]["Moist"] = (float)map(Read[1].Moisture,0,255,0,100);
   
   telemetry2[0]["T1"] = (float)Read[2].Thermal[0]/100;
   telemetry2[0]["T2"] = (float)Read[2].Thermal[1]/100;
@@ -105,7 +138,7 @@ void UploadData(){
   telemetry2[0]["T4"] = (float)Read[2].Thermal[3]/100;
   telemetry2[0]["T5"] = (float)Read[2].Thermal[4]/100;
   telemetry2[0]["CNT"] = Read[2].Continuity;
-  telemetry2[0]["Moist"] = Read[2].Moisture;
+  telemetry2[0]["Moist"] = (float)map(Read[2].Moisture,0,255,0,100);
 
   String topic = "kp1/" + APP_VERSION + "/dcx/" + TOKEN + "/json";
   String topic1 = "kp1/" + APP_VERSION + "/dcx/" + TOKEN1 + "/json";
@@ -141,6 +174,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 void setup_wifi() {
+  digitalWrite(LED_BUILTIN, LOW);
   if (WiFi.status() != WL_CONNECTED) {
     delay(200);
     Serial.println();
@@ -148,6 +182,7 @@ void setup_wifi() {
     WiFi.begin(ssid, password);
     connectWiFi();
   }
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void connectWiFi() {
