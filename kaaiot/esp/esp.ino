@@ -59,7 +59,8 @@ void Printdata(){
             Serial.print((float)Read[j].Thermal[i]/100, 1);
             Serial.print("\t");
         }
-        String tmp = String((Read[j].Continuity & 1)?'0':'1')+ String((Read[j].Continuity & 2)?'0':'1')+ String((Read[j].Continuity & 4)?'0':'1')+ String((Read[j].Continuity & 8)?'0':'1')+ String((Read[j].Continuity & 16)?'0':'1');
+        //String tmp = String((Read[j].Continuity & 1)?'0':'1')+ String((Read[j].Continuity & 2)?'0':'1')+ String((Read[j].Continuity & 4)?'0':'1')+ String((Read[j].Continuity & 8)?'0':'1')+ String((Read[j].Continuity & 16)?'0':'1');
+      String tmp = String((Read[j].Continuity & 1)?'0':'1')+ String((Read[j].Continuity & 2)?'0':'1')+ String((Read[j].Continuity & 4)?'0':'1')+ String((Read[j].Continuity & 8)?'0':'1');
         Serial.print(tmp);
         //Serial.print(Read[j].Continuity, BIN);
         Serial.print("\t");
