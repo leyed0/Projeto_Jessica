@@ -21,7 +21,7 @@ MAX6675 robojax2(7, 9, 6);// create instance object of MAX6675
 MAX6675 robojax3(7, 10, 6);// create instance object of MAX6675
 MAX6675 robojax4(7, 11, 6);// create instance object of MAX6675
 MAX6675 robojax5(7, 12, 6);// create instance object of MAX6675
-int humidity = A0
+int humidity = A0;
 int time=1000;
 
 void setup() {
@@ -38,13 +38,13 @@ void loop() {
     
     if(timer+time<=millis()){
         timer+=time;
-        log()
+        log();
     }
 
 }
 
 void log(){
-   Serial.print("sensores: \t")
+   Serial.print("sensores: \t");
    Serial.print(robojax1.readCelsius());
    Serial.print("\t");
    Serial.print(robojax2.readCelsius());
@@ -55,5 +55,6 @@ void log(){
    Serial.print("\t");
    Serial.print(robojax5.readCelsius());
    Serial.print("\t");
-   Serial.print(analogRead(humidity));
+   Serial.println(analogRead(humidity));
+
 }
